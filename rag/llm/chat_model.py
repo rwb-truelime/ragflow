@@ -77,6 +77,10 @@ def _apply_model_family_policies(
     if "qwen3" in model_name_lower:
         sanitized_kwargs["extra_body"] = {"enable_thinking": False}
 
+    # Gemma4 family disables thinking via extra_body for Ollama.
+    if "gemma4" in model_name_lower or "gemma-4" in model_name_lower:
+        sanitized_kwargs.setdefault("extra_body", {})["think"] = False
+
     if backend == "base":
         return sanitized_gen_conf, sanitized_kwargs
 
